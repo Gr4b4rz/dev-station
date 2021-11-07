@@ -1,0 +1,33 @@
+---
+- name: 'Install required packages'
+  apt:
+    name: "{{ packages }}"
+    state: present
+    install_recommends: no
+  vars:
+    packages:
+    - i3
+    - i3lock
+    - dmenu
+    - xinit
+    - xorg
+    - xfce4-session
+    - rofi
+  become: yes
+
+- name: 'Clone config'
+  ansible.builtin.git:
+    repo: https://github.com/Gr4b4rz/i3-config.git
+    dest: ~/i4-config
+
+- name: 'Copy fonts to system dir'
+  ansible.builtin.copy:
+    src: ~/i4-config/polybar/fonts/*
+    dest: /usr/share/fonts/
+  become: yes
+
+- name: 'Load fonts'
+  ansible.builtin.command: fc-cache -vf /usr/share/fonts
+
+- name: Unconditionally reboot the machine with all defaults
+  reboot:

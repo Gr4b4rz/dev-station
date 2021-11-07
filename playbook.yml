@@ -1,0 +1,6 @@
+---
+- hosts: all
+  roles:
+    - { role: packages }
+    - { role: nvim }
+    - { role: i3 }

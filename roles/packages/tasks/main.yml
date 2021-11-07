@@ -1,0 +1,102 @@
+---
+- name: Add deb non-free into sources list
+  become: yes
+  ansible.builtin.apt_repository:
+    repo: deb http://deb.debian.org/debian/ bullseye non-free
+- name: Add deb-src non-free into sources list
+  become: yes
+  ansible.builtin.apt_repository:
+    repo: deb-src http://deb.debian.org/debian/ bullseye non-free
+- name: Install iwlwifi firmware
+  become: yes
+  apt:
+    name: firmware-iwlwifi
+    update_cache: yes
+- name: Load iwlwifi firmware
+  become: yes
+  community.general.modprobe:
+    name: iwlwifi
+    state: present
+
+- name: 'Install basic packages'
+  apt:
+    name: "{{ packages }}"
+    state: present
+    install_recommends: no
+  vars:
+    packages:
+    - network-manager
+    - net-tools
+    - tmux
+    - ssh
+    - zsh
+    - fzf
+    - bat
+    - arandr
+    - apt-transport-https
+    - curl
+    - ranger
+    - zathura
+    - sxiv
+    - libdbus-1-dev
+    - libdbus-glib-1-dev
+    - gnome-terminal
+    - feh
+    - xinit
+    - xorg
+    - xfce4-session
+    - docker.io
+    - docker-compose
+    - git
+    - gcc
+    - g++
+    - make
+    - cmake
+    - python3
+    - python3-pip
+    - python3-dev
+    - ipython3
+    - wireshark
+    - clang-format
+    - clang
+    - fonts-powerline
+    - htop
+    - tig
+    - flameshot
+    - ffmpeg
+    - mumble
+    - pavucontrol
+    - npm
+    - libboost-all-dev
+  become: yes
+
+- name: 'Install python packages'
+  pip:
+    name: "{{ item }}"
+    executable: pip3
+    virtualenv_python: /usr/bin/python3
+  loop:
+    - jedi
+    - flake8
+    - autokey
+    - elasticsearch
+    - requests
+    - redis
+    - urllib3
+    - PyYAML
+    - matplotlib
+    - autopep8
+    - pylint
+    - wheel
+
+- name: 'Install ohhmyzsh'
+  ansible.builtin.command: curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+
+- name: 'Clone fzf'
+  ansible.builtin.git:
+    repo: https://github.com/junegunn/fzf.git
+    dest: ~/.fzf2
+    depth: 1
+
+- name: 'Install fzf'
+  ansible.builtin.command: ~/.fzf2/install

@@ -1,0 +1,13 @@
+---
+- name: 'Install required packages'
+  apt:
+    name: "{{ packages }}"
+    state: present
+    install_recommends: no
+  vars:
+    packages:
+    - vim
+    - neovim
+    - ccls
+    - nodejs
+  become: yes
