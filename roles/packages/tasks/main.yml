@@ -25,6 +25,9 @@
     install_recommends: no
   vars:
     packages:
+    - firmware-linux
+    - firmware-realtek
+    - lightdm
     - network-manager
     - net-tools
     - tmux
@@ -68,6 +71,7 @@
     - pavucontrol
     - npm
     - libboost-all-dev
+    - apt-transport-https
   become: yes
 
 - name: 'Install python packages'
@@ -89,14 +93,25 @@
     - pylint
     - wheel
 
+- name: 'Make config directory'
+  ansible.builtin.file:
+    path: ~/.config
+    state: directory
+
+- name: Get path to ohhmyzsh
+  stat:
+    path: ~/.oh-my-zsh
+  register: ohmyzsh_dir
+
 - name: 'Install ohhmyzsh'
-  ansible.builtin.command: curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+  when: not ohmyzsh_dir.stat.exists
+  ansible.builtin.shell: sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 - name: 'Clone fzf'
   ansible.builtin.git:
     repo: https://github.com/junegunn/fzf.git
-    dest: ~/.fzf2
+    dest: ~/.fzf
     depth: 1
 
 - name: 'Install fzf'
-  ansible.builtin.command: ~/.fzf2/install
+  ansible.builtin.command: ~/.fzf/install

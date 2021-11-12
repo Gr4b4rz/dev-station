@@ -2,5 +2,6 @@
 - hosts: all
   roles:
     - { role: packages }
-    - { role: nvim }
     - { role: i3 }
+    - { role: nvim }
+    - { role: brave }

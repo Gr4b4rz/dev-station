@@ -11,3 +11,13 @@
     - ccls
     - nodejs
   become: yes
+
+- name: 'Copy vimrc to default directory'
+  ansible.builtin.copy:
+    src: ~/i3-config/vimrc
+    dest: ~.vimrc
+
+- name: 'Copy nvim config to default directory'
+  ansible.builtin.copy:
+    src: ~/i3-config/nvim
+    dest: ~./config/

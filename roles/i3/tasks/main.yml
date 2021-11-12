@@ -18,16 +18,41 @@
 - name: 'Clone config'
   ansible.builtin.git:
     repo: https://github.com/Gr4b4rz/i3-config.git
-    dest: ~/i4-config
+    dest: ~/i3-config
 
 - name: 'Copy fonts to system dir'
   ansible.builtin.copy:
-    src: ~/i4-config/polybar/fonts/*
+    src: ~/i3-config/fonts/
     dest: /usr/share/fonts/
   become: yes
 
 - name: 'Load fonts'
   ansible.builtin.command: fc-cache -vf /usr/share/fonts
 
-- name: Unconditionally reboot the machine with all defaults
-  reboot:
+- name: 'Make i3 config directory'
+  ansible.builtin.file:
+    path: ~/.config/i3
+    state: directory
+
+- name: 'Copy i3 config'
+  ansible.builtin.copy:
+    src: ~/i3-config/config
+    dest: ~/.config/i3/
+
+- name: 'Copy zshrc'
+  ansible.builtin.copy:
+    src: ~/i3-config/zshrc
+    dest: ~/.zshrc
+
+- name: 'Copy ranger config files'
+  ansible.builtin.copy:
+    src: ~/i3-config/ranger
+    dest: ~/.zshrc
+
+- name: 'Copy polybar config files'
+  ansible.builtin.copy:
+    src: ~/i3-config/polybar
+    dest: ~/.config/
+
+- name: 'Setup gnome-terminal'
+  ansible.builtin.command: ~/i3-config/gnome_terminal/setup_terminal.sh
