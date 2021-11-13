@@ -1,5 +1,5 @@
 ---
-- name: 'Install required packages'
+- name: Install required packages
   apt:
     name: "{{ packages }}"
     state: present
@@ -12,12 +12,17 @@
     - nodejs
   become: yes
 
-- name: 'Copy vimrc to default directory'
+- name: Clone config
+  ansible.builtin.git:
+    repo: https://github.com/Gr4b4rz/vim-config.git
+    dest: ~/vim-config
+
+- name: Copy vimrc to default directory
   ansible.builtin.copy:
-    src: ~/i3-config/vimrc
+    src: ~/vim-config/vimrc
     dest: ~.vimrc
 
-- name: 'Copy nvim config to default directory'
+- name: Copy nvim config to default directory
   ansible.builtin.copy:
-    src: ~/i3-config/nvim
+    src: ~/vim-config/nvim
     dest: ~./config/
