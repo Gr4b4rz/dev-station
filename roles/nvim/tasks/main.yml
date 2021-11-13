@@ -20,9 +20,18 @@
 - name: Copy vimrc to default directory
   ansible.builtin.copy:
     src: ~/vim-config/vimrc
-    dest: ~.vimrc
+    dest: ~/.vimrc
 
 - name: Copy nvim config to default directory
   ansible.builtin.copy:
     src: ~/vim-config/nvim
-    dest: ~./config/
+    dest: ~/.config/
+
+- name: Install vim-plug
+  ansible.builtin.shell: sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+
+- name: Install neovim plugins
+  ansible.builtin.shell: nvim +'PlugInstall --sync' +qall &> /dev/null < /dev/tty
+
+- name: Install CoC extensions
+  ansible.builtin.shell: ~/vim-config/coc/install_extensions.sh

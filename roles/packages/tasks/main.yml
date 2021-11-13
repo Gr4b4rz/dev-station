@@ -1,12 +1,12 @@
 ---
-- name: Add deb non-free into sources list
+- name: Add deb non-free and contrib into sources list
   become: yes
   ansible.builtin.apt_repository:
-    repo: deb http://deb.debian.org/debian/ bullseye non-free
-- name: Add deb-src non-free into sources list
+    repo: deb http://deb.debian.org/debian/ bullseye non-freea contrib
+- name: Add deb-src non-free and contrib into sources list
   become: yes
   ansible.builtin.apt_repository:
-    repo: deb-src http://deb.debian.org/debian/ bullseye non-free
+    repo: deb-src http://deb.debian.org/debian/ bullseye non-free contrib
 - name: Install iwlwifi firmware
   become: yes
   apt:
@@ -27,6 +27,7 @@
     packages:
     - firmware-linux
     - firmware-realtek
+    - intel-microcode
     - lightdm
     - network-manager
     - net-tools
@@ -39,6 +40,7 @@
     - apt-transport-https
     - curl
     - ranger
+    - nitrogen
     - zathura
     - sxiv
     - libdbus-1-dev
@@ -72,6 +74,8 @@
     - npm
     - libboost-all-dev
     - apt-transport-https
+    - xsel
+    - silversearcher-ag
   become: yes
 
 - name: Install python packages

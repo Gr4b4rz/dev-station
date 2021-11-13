@@ -28,7 +28,7 @@
   become: yes
 
 - name: Load fonts
-  ansible.builtin.command: fc-cache -vf /usr/share/fonts
+  ansible.builtin.shell: fc-cache -vf /usr/share/fonts
 
 - name: Make i3 config directory
   ansible.builtin.file:
@@ -50,13 +50,18 @@
     src: ~/i3-config/ranger
     dest: ~/.config/
 
+- name: Changing perm of ranger's scope.sh - adding "+x"
+  file:
+    path: ~/.config/ranger/scope.sh
+    mode: a+x
+
 - name: Copy polybar config files
   ansible.builtin.copy:
     src: ~/i3-config/polybar
     dest: ~/.config/
 
 - name: Setup gnome-terminal
-  ansible.builtin.command: ~/i3-config/gnome_terminal/setup_terminal.sh
+  ansible.builtin.shell: ~/i3-config/gnome_terminal/setup_terminal.sh
 
 - name: Change user's shell and generate ssh keys
   ansible.builtin.user:
@@ -64,6 +69,7 @@
     shell: /bin/zsh
     generate_ssh_key: yes
     ssh_key_type: ed25519
+  become: true
 
 - name: Change root's shell
   ansible.builtin.user:
