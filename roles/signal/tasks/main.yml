@@ -1,0 +1,16 @@
+---
+- name: Download signal gpg key
+  become: yes
+  ansible.builtin.shell: wget -O- https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor > /usr/share/keyrings/signal-desktop-keyring.gpg
+  args:
+    warn: no
+- name: Add signal repository to source list
+  become: yes
+  ansible.builtin.apt_repository:
+    repo: deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main
+    filename: signal-xenial.list
+- name: Install signal package
+  become: yes
+  apt:
+    name: signal-desktop
+    update_cache: yes
