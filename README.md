@@ -6,8 +6,9 @@ and neovim as their IDE.
 
 ## To run this playbook after Debian installation
 
-1. Install sudo and ansible package as root user
+1. Install sudo, git and ansible package as root user
 2. Add your user to sudoers
 3. Clone this repository
 4. Run `ansible-playbook -u USER -i hosts -K playbook.yml --connection=local`
 5. Reboot
+6. Choose i3 in the right corner of login screen
