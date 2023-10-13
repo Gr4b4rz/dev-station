@@ -1,12 +1,4 @@
 ---
-- name: Add deb non-free and contrib into sources list
-  become: yes
-  ansible.builtin.apt_repository:
-    repo: deb http://deb.debian.org/debian/ bullseye non-freea contrib
-- name: Add deb-src non-free and contrib into sources list
-  become: yes
-  ansible.builtin.apt_repository:
-    repo: deb-src http://deb.debian.org/debian/ bullseye non-free contrib
 - name: Install iwlwifi firmware
   become: yes
   apt:
@@ -78,6 +70,8 @@
     - silversearcher-ag
     - gpg
     - x2goclient
+    - pulseaudio
+    - dunst
   become: yes
 
 - name: Install python packages
@@ -86,7 +80,6 @@
     executable: pip3
     virtualenv_python: /usr/bin/python3
   loop:
-    - jedi
     - flake8
     - autokey
     - elasticsearch
